@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -66,6 +67,7 @@ public class ArticleController {
         return "articles/index";
     }
 
+    // 수정할 데이터 페이지를 보여주는 기능
     @GetMapping("/articles/{id}/edit")
     public String edit(@PathVariable Long id, Model model) {
         Article article = articleRepository.findById(id).orElse(null);
@@ -74,6 +76,7 @@ public class ArticleController {
         return "articles/edit";
     }
 
+    // 데이터 수정을 반영하는 기능
     @PostMapping("/articles/update")
     public String update(ArticleForm form) {
         Article revised = form.toEntity();
@@ -84,5 +87,17 @@ public class ArticleController {
         }
 
         return "redirect:/articles/" + revised.getId();
+    }
+
+    @GetMapping("/articles/{id}/delete")
+    public String delete(@PathVariable Long id, RedirectAttributes rttr) {
+        Article target = articleRepository.findById(id).orElse(null);
+
+        if (target != null) {
+            articleRepository.delete(target);
+            rttr.addFlashAttribute("msg", "삭제되었습니다");
+        }
+
+        return "redirect:/articles";
     }
 }
