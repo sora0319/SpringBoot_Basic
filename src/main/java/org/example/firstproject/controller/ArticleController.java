@@ -42,7 +42,7 @@ public class ArticleController {
         //System.out.println(saved.toString());
         log.info(saved.toString());
 
-        return "";
+        return "redirect:/articles/" + saved.getId();
     }
 
     // db에서 저장된 form data를 찾아와 보여주는 기능
