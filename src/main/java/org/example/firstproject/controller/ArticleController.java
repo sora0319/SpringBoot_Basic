@@ -6,7 +6,9 @@ import org.example.firstproject.entity.Article;
 import org.example.firstproject.repository.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Slf4j
@@ -16,11 +18,13 @@ public class ArticleController {
     @Autowired
     private ArticleRepository articleRepository;
 
+    // 입력 폼 페이지 띄우기
     @GetMapping("/articles/new")
     public String newArticleForm(){
         return "articles/new";
     }
 
+    // form에서 받은 데이터 db에 저장
     @PostMapping("/articles/create")
     public String createArticle(ArticleForm form) {
         //System.out.println(form.toString());
@@ -37,5 +41,16 @@ public class ArticleController {
         log.info(saved.toString());
 
         return "";
+    }
+
+    // form 에서 입력한 데이터를 db에서 찾아와 보여주는 기능
+    @GetMapping("/articles/{id}")
+    public String show(@PathVariable Long id, Model model) {
+        log.info("id = " + id);
+
+        Article articleEntity = articleRepository.findById(id).orElse(null);
+        model.addAttribute("article", articleEntity);
+
+        return "articles/show";
     }
 }
