@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.List;
+
 @Slf4j
 @Controller
 public class ArticleController {
@@ -43,7 +45,7 @@ public class ArticleController {
         return "";
     }
 
-    // form 에서 입력한 데이터를 db에서 찾아와 보여주는 기능
+    // db에서 저장된 form data를 찾아와 보여주는 기능
     @GetMapping("/articles/{id}")
     public String show(@PathVariable Long id, Model model) {
         log.info("id = " + id);
@@ -52,5 +54,15 @@ public class ArticleController {
         model.addAttribute("article", articleEntity);
 
         return "articles/show";
+    }
+
+    // db에서 저장된 form data 전체를 찾아와 보여주는 기능
+    @GetMapping("/articles")
+    public String index(Model model){
+        List<Article> articleEntitys = (List<Article>) articleRepository.findAll();
+
+        model.addAttribute("articleList", articleEntitys);
+
+        return "articles/index";
     }
 }
