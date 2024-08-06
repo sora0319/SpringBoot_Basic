@@ -1,3 +1,4 @@
+<!-- 전체 데이터 목록 보여주는 페이지 -->
 {{>layouts/header}}
     <table class="table">
         <thead>
@@ -21,4 +22,11 @@
         </tbody>
     </table>
     <a href="/articles/new">New Article</a>
+{{#msg}}
+    <div class="alert alert-primary alert-dismissible">
+        {{msg}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+{{/msg}}
 {{>layouts/footer}}
